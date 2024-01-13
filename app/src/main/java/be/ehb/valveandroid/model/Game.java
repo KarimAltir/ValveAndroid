@@ -4,28 +4,39 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class Game {
+import java.io.Serializable;
+
+@Entity(tableName = "game")
+public class Game implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int gameId;
     private String name;
     private String slug;
     private String released;
+    private String rating;
     private String background_image;
-    private String platform;
+
+
+    public Game() {
+    }
 
     @Ignore
-    public Game(String name, String slug, String released, String background_image, String platform) {
+    public Game(int gameId, String name, String slug, String released, String rating, String background_image) {
+        this.gameId = gameId;
         this.name = name;
         this.slug = slug;
         this.released = released;
+        this.rating = rating;
         this.background_image = background_image;
-        this.platform = platform;
     }
 
-    public int getId() {
-        return id;
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 
     public String getName() {
@@ -52,6 +63,14 @@ public class Game {
         this.released = released;
     }
 
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
     public String getBackground_image() {
         return background_image;
     }
@@ -60,11 +79,5 @@ public class Game {
         this.background_image = background_image;
     }
 
-    public String getPlatform() {
-        return platform;
-    }
 
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
 }
