@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/main"
+    app:startDestination="@id/gamesFragment">
+    <fragment
+        android:id="@+id/gamesFragment"
+        android:name="be.ehb.valveandroid.view.GamesFragment"
+        android:label="GamesFragment" >
+        <action
+            android:id="@+id/action_gamesFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="be.ehb.valveandroid.view.DetailFragment"
+        android:label="DetailFragment" >
+        <action
+            android:id="@+id/action_detailFragment_to_gamesFragment"
+            app:destination="@id/gamesFragment" />
+    </fragment>
+</navigation>
