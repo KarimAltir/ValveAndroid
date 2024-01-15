@@ -1,7 +1,10 @@
 package be.ehb.valveandroid;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +14,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import java.util.logging.Filter;
+
+import be.ehb.valveandroid.view.FilterFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +41,25 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, mNavController, mAppBarConfiguration);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.filter_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_filter) {
+            showFilterDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showFilterDialog() {
+        mNavController.navigate(R.id.filterFragment);
     }
 
     @Override

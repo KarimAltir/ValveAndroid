@@ -10,12 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import be.ehb.valveandroid.R;
 
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +30,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import be.ehb.valveandroid.model.GameDAO;
@@ -65,7 +68,7 @@ public class GamesFragment extends Fragment implements GameAdapter.OnGameItemCli
         // Initialize ViewModel
         gameViewModel = new ViewModelProvider(this).get(GameViewModel.class);
 
-        gameViewModel.getAllGames().observe(getViewLifecycleOwner(), games -> {
+        /*gameViewModel.getAllGames().observe(getViewLifecycleOwner(), games -> {
             gamesList.clear();
             gamesList.addAll(games);
             gameAdapter.notifyDataSetChanged();
@@ -76,6 +79,20 @@ public class GamesFragment extends Fragment implements GameAdapter.OnGameItemCli
             platformsList.addAll(platforms);
             gameAdapter.notifyDataSetChanged();
         });
+
+        // get filter games by rating
+        gameViewModel.getFilteredGames("4").observe(getViewLifecycleOwner(), games -> {
+            gamesList.clear();
+            gamesList.addAll(games);
+            gameAdapter.notifyDataSetChanged();
+        });*/
+
+        /*// get filter games
+        gameViewModel.getFilteredGamesByDates("2000-01-01", "2020-12-31").observe(getViewLifecycleOwner(), games -> {
+            gamesList.clear();
+            gamesList.addAll(games);
+            gameAdapter.notifyDataSetChanged();
+        });*/
 
         searchView = rootView.findViewById(R.id.searchView); // Add this line to get reference to the SearchView
         setupSearchView(); // Call setupSearchView
@@ -160,6 +177,7 @@ public class GamesFragment extends Fragment implements GameAdapter.OnGameItemCli
                     String released = gameJSON.getString("released");
                     String rating = gameJSON.getString("rating");
                     String backgroundImage = gameJSON.getString("background_image");
+                    //String platform = gameJSON.getString("platforms");
 
 
                     // Extract platforms array
@@ -168,18 +186,15 @@ public class GamesFragment extends Fragment implements GameAdapter.OnGameItemCli
 
                     for (int j = 0; j < platformsJSON.length(); j++) {
                         JSONObject platformJSON = platformsJSON.getJSONObject(j);
+
+                        // Extract platform details from the "platform" field
                         int platformId = platformJSON.getJSONObject("platform").getInt("id");
                         String platformName = platformJSON.getJSONObject("platform").getString("name");
                         String platformSlug = platformJSON.getJSONObject("platform").getString("slug");
-
-                        // Create Platform object
-                        Platform platform = new Platform(platformId, platformName, platformSlug);
-                        platforms.add(platform);
                     }
 
-                    // Create Game object with platforms
-                    Game game = new Game(gameId, name, slug, released, rating, backgroundImage);
-                    //game.setGameId(gameId);
+                    // Add the platforms list to your Game object
+                    Game game = new Game(gameId, name, slug, released, rating, backgroundImage /*, platform */);
                     parsedGames.add(game);
                 }
 
@@ -204,6 +219,7 @@ public class GamesFragment extends Fragment implements GameAdapter.OnGameItemCli
             new Thread(() -> {
                     // Insert parsedGames into the database
                     gameDataBase.getGameDAO().getAllGames();
+                    gameDataBase.getPlatformDAO().getAllPlatforms();
                 }).start();
         }).start();
 
@@ -238,6 +254,34 @@ public class GamesFragment extends Fragment implements GameAdapter.OnGameItemCli
         }
 
         return filteredList;
+    }
+
+    private void setupPopupMenu(View anchor) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), anchor);
+        popupMenu.getMenuInflater().inflate(R.menu.filter_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.btn_filter) {
+                showFilterDialog();
+                return true;
+            }
+            return false;
+        });
+
+        popupMenu.show();
+    }
+
+    public void applyFilter(String minRating, String startDate, String endDate) {
+        // Update your ViewModel with the filter parameters
+        gameViewModel.getFilteredGames(minRating, startDate, endDate).observe(getViewLifecycleOwner(), games -> {
+            // Submit the filtered list to the adapter
+            gameAdapter.setItems((ArrayList<Game>) games);
+        });
+    }
+
+    private void showFilterDialog() {
+        FilterFragment filterFragment = new FilterFragment();
+        filterFragment.show(getChildFragmentManager(), "FilterFragment");
     }
 
     @Override

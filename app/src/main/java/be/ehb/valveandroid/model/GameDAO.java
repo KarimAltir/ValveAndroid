@@ -35,6 +35,9 @@ public interface GameDAO {
     @Query("SELECT * FROM game WHERE released = '2018'")
     LiveData<List<Game>> getGamesFrom2018();
 
+    //filter games
+    @Query("SELECT * FROM game WHERE rating >= :minRating AND released BETWEEN :startDate AND :endDate")
+    LiveData<List<Game>> getFilteredGames(String minRating, String startDate, String endDate);
 
     @Update
     void updateGame(Game game);
