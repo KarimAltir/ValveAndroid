@@ -66,8 +66,21 @@ public class DetailFragment extends Fragment {
                 gameDetailReleased.setText(game.getReleased());
                 gameDetailRating.setText(game.getRating());
 
+                // if the Rating is bigger than 4 show green
+                if (Float.parseFloat(game.getRating()) >= 4) {
+                    gameDetailRating.setTextColor(getResources().getColor(R.color.green));
+                }
+                // if the Rating is smaller than 4 show yellow
+                else if (Float.parseFloat(game.getRating()) < 4) {
+                    gameDetailRating.setTextColor(getResources().getColor(R.color.yellow));
+                }
+                // if the Rating is smaller than 2 show red
+                else if (Float.parseFloat(game.getRating()) < 2) {
+                    gameDetailRating.setTextColor(getResources().getColor(R.color.red));
+                }
+
                 if (platform != null) {
-                    gameDetailPlatforms.setText(platform.getName());
+                    gameDetailPlatforms.setText(game.getName().toString());
                 }
                 else {
                     gameDetailPlatforms.setText("No platform");
