@@ -83,7 +83,7 @@ public class DetailFragment extends Fragment {
                     gameDetailPlatforms.setText(game.getName().toString());
                 }
                 else {
-                    gameDetailPlatforms.setText("No platform");
+                    gameDetailPlatforms.setText("No platform at this moment");
                 }
             }
         }
