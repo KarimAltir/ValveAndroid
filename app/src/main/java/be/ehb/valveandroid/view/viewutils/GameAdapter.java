@@ -97,6 +97,13 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
                 .navigate(R.id.detailFragment, bundle);
     }
 
+    // navigate from filter fragment to games fragment
+    public void navigateToGamesFragment() {
+        NavHostFragment.findNavController((NavHostFragment) ((FragmentActivity) context).getSupportFragmentManager()
+                        .findFragmentById(R.id.action_filterFragment_to_gamesFragment))
+                .navigate(R.id.gamesFragment);
+    }
+
     public void setOnGameItemClickListener(OnGameItemClickListener listener) {
         this.listener = listener;
     }
