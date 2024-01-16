@@ -68,7 +68,7 @@ public class GamesFragment extends Fragment implements GameAdapter.OnGameItemCli
         // Initialize ViewModel
         gameViewModel = new ViewModelProvider(this).get(GameViewModel.class);
 
-        /*gameViewModel.getAllGames().observe(getViewLifecycleOwner(), games -> {
+        gameViewModel.getAllGames().observe(getViewLifecycleOwner(), games -> {
             gamesList.clear();
             gamesList.addAll(games);
             gameAdapter.notifyDataSetChanged();
@@ -80,7 +80,7 @@ public class GamesFragment extends Fragment implements GameAdapter.OnGameItemCli
             gameAdapter.notifyDataSetChanged();
         });
 
-        // get filter games by rating
+        /*// get filter games by rating
         gameViewModel.getFilteredGames("4").observe(getViewLifecycleOwner(), games -> {
             gamesList.clear();
             gamesList.addAll(games);
@@ -220,7 +220,7 @@ public class GamesFragment extends Fragment implements GameAdapter.OnGameItemCli
                     // Insert parsedGames into the database
                     gameDataBase.getGameDAO().getAllGames();
                     gameDataBase.getPlatformDAO().getAllPlatforms();
-                }).start();
+            }).start();
         }).start();
 
     }
