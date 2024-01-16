@@ -11,3 +11,6 @@ https://youtu.be/_huNIBQ_jLQ?si=O_5KYxnuPqYr3Edc
 https://github.com/David-VS/DeGemiddeldeJokes.git
 
 https://github.com/David-VS/DataBass.git
+
+AI:
+https://chat.openai.com/share/d139f954-cd86-45a5-864d-ca14c42c87e6
